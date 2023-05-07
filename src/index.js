@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors")
 const config = require("./config");
 const port = config.PORT;
 const app = express();
@@ -10,6 +11,7 @@ const dietRoutes = require("./routes/diet")
 const postRoutes = require("./routes/post")
 const suggestionRoutes = require("./routes/suggestion")
 
+app.use(cors())
 app.use(express.json());
 app.use("/clients", clientRoutes)
 app.use("/admins", adminRoutes)
