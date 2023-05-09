@@ -17,7 +17,7 @@ const getClient = async (req, res, next) => {
 }
 
 const checkEmailExists = async (req, res, next) => {
-    const {valid, reason, validators} = await emailValidator.isEmailValid(req.body.email);
+    const valid = await emailValidator.isEmailValid(req.body.email);
 
     if (!valid) return res.status(400).json({ message: "Email not valid" });
 

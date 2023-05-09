@@ -1,7 +1,6 @@
-const emailValidator = require('deep-email-validator');
-
 async function isEmailValid(email) {
-    return emailValidator.validate(email)
+    const emailRegex = new RegExp(/^[A-Za-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/, "gm");
+    return emailRegex.test(email)
 }
 
 module.exports = {
