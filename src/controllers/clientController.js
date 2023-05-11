@@ -36,7 +36,7 @@ const createClient = async (req, res) => {
 }
 
 const updateClient = async (req, res) => {
-    if (req.body.password !== null) {
+    if (req.body.password != null) {
         let hashedPassword = await crypt.createCrypt(req.body.password)
         req.body.password = hashedPassword
     }
