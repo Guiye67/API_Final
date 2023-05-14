@@ -1,4 +1,5 @@
-const Client = require("../models/client");
+const Client = require("../models/client")
+const GymClass = require("../models/class")
 const crypt = require("../middleware/crypt")
 const auth = require("../middleware/authentication")
 
@@ -28,6 +29,7 @@ const createClient = async (req, res) => {
     
     try {
         const newClient = await client.save();
+        await updateClassesSignedUp(newClient.id, newClient.classes)
         const token = auth.create(newClient);
         res.status(201).json({newClient, token: token});
     } catch (err) {
@@ -40,9 +42,10 @@ const updateClient = async (req, res) => {
         let hashedPassword = await crypt.createCrypt(req.body.password)
         req.body.password = hashedPassword
     }
-
+    
     try {
         const updatedClient = await Client.findByIdAndUpdate(req.params.id, req.body, {new:true});
+        await updateClassesSignedUp(updatedClient.id, updatedClient.classes)
         res.json(updatedClient);
     } catch (err) {
         res.status(400).json({ message: err.message });
@@ -52,6 +55,7 @@ const updateClient = async (req, res) => {
 const deleteClient = async (req, res) => {
     try {
         await Client.findByIdAndRemove(res.client);
+        await removeFromClassesSignedUp(res.client.id)
         res.json({ message: 'Client deleted' });
     } catch (err) {
         res.status(500).json({ message: err.message });
@@ -71,6 +75,31 @@ const login = async (req, res) => {
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
+}
+
+const updateClassesSignedUp = async (id, clientClasses) => {
+    const classes = await GymClass.find();
+
+    classes.forEach(async (item) => {
+        if (clientClasses.includes(item.name) && !item.signedUp.includes(id)) {
+            item.signedUp.push(id)
+            await GymClass.findByIdAndUpdate(item.id, item, {new:true})
+        } else if (!clientClasses.includes(item.name) && item.signedUp.includes(id)) {
+            item.signedUp = item.signedUp.filter((x) => x != id)
+            await GymClass.findByIdAndUpdate(item.id, item, {new:true})
+        }
+    })
+}
+
+const removeFromClassesSignedUp = async (id) => {
+    const classes = await GymClass.find();
+
+    classes.forEach(async (item) => {
+        if (item.signedUp.includes(id)) {
+            item.signedUp = item.signedUp.filter((x) => x != id && x != "")
+            await GymClass.findByIdAndUpdate(item.id, item, {new:true})
+        }
+    })
 }
 
 module.exports = {
