@@ -11,6 +11,11 @@ const suggestionSchema = mongoose.Schema({
     description: {
         type: String,
         require: true
+    },
+    resolved: {
+        type: Boolean,
+        require: true,
+        default: false
     }
 },{versionKey:false});
 

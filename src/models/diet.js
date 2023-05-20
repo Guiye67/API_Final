@@ -27,6 +27,11 @@ const dietSchema = mongoose.Schema({
     allergens: {
         type: String,
         require: true
+    },
+    resolved: {
+        type: Boolean,
+        require: true,
+        default: false
     }
 },{versionKey:false});
 

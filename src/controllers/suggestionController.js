@@ -16,7 +16,7 @@ const getSuggestionById = async (req, res) => {
 const createSuggestion = async (req, res) => {
     const suggestion = new Suggestion({
         title: req.body.title,
-        client: req.body.email,
+        client: req.body.client,
         description: req.body.description
     });
     
