@@ -24,7 +24,7 @@ const getDietByClient = async (req, res) => {
 
 const createDiet = async (req, res) => {
     const diet = new Diet({
-        client: req.body.email,
+        client: req.body.client,
         age: req.body.age,
         gender: req.body.gender,
         weight: req.body.weight,
