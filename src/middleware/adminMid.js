@@ -17,19 +17,21 @@ const getAdmin = async (req, res, next) => {
 }
 
 const checkEmailExists = async (req, res, next) => {
-    const {valid, reason, validators} = await emailValidator.isEmailValid(req.body.email);
+    const valid = await emailValidator.isEmailValid(req.body.email);
 
     if (!valid) return res.status(400).json({ message: "Email not valid" });
 
-    let admin
-    try {
-        admin = await Admin.find({ email: req.body.email})
+    if ((res.admin == undefined) || (res.admin != undefined && res.admin.email != req.body.email)) {
+        let admin
+        try {
+            admin = await Admin.find({ email: req.body.email})
 
-        if (admin.length != 0) {
-            return res.status(409).json({ message: 'Email already exists in DB' });
+            if (admin.length != 0) {
+                return res.status(409).json({ message: 'Email already exists in DB' });
+            }
+        } catch (err) {
+            return res.status(500).json({ message: err.message });
         }
-    } catch (err) {
-        return res.status(500).json({ message: err.message });
     }
 
     next();

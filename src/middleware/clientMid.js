@@ -21,18 +21,7 @@ const checkEmailExists = async (req, res, next) => {
 
     if (!valid) return res.status(400).json({ message: "Email not valid" });
 
-    if (res.client != undefined && res.client.email != req.body.email) {
-        let client;
-        try {
-            client = await Client.find({ email: req.body.email});
-            
-            if (client.length != 0) {
-                return res.status(409).json({ message: 'Email already exists in DB' });
-            }
-        } catch (err) {
-            return res.status(500).json({ message: err.message });
-        }
-    } else if (res.client == undefined) {
+    if ((res.client == undefined) || (res.client != undefined && res.client.email != req.body.email)) {
         let client;
         try {
             client = await Client.find({ email: req.body.email});
