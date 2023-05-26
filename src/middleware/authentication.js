@@ -9,6 +9,8 @@ const create = (client) => {
 const verify = (req, res, next) => {
     try {
         let headerToken
+        if (req.headers['authorization'] == null) res.status(401).json({ message: 'Unauthorized (token required)' })
+
         if (req.headers['authorization'].split(" ").length > 1)
             headerToken = req.headers['authorization'].split(" ")[1]
         else
