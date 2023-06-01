@@ -37,7 +37,7 @@ const createDiet = async (req, res) => {
         const newDiet = await diet.save();
         res.status(201).json({newDiet});
     } catch (err) {
-        res.status(400).json({ message: err.message });
+        res.status(500).json({ message: err.message });
     }
 }
 
@@ -46,7 +46,7 @@ const updateDiet = async (req, res) => {
         const updatedDiet = await Diet.findByIdAndUpdate(req.params.id, req.body, {new:true});
         res.json(updatedDiet);
     } catch (err) {
-        res.status(400).json({ message: err.message });
+        res.status(500).json({ message: err.message });
     }
 }
 

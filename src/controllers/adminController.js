@@ -27,7 +27,7 @@ const createAdmin = async (req, res) => {
         const token = auth.create(newAdmin);
         res.status(201).json({newAdmin, token: token});
     } catch (err) {
-        res.status(400).json({ message: err.message });
+        res.status(500).json({ message: err.message });
     }
 }
 
@@ -41,7 +41,7 @@ const updateAdmin = async (req, res) => {
         const updatedAdmin = await Admin.findByIdAndUpdate(req.params.id, req.body, {new:true});
         res.json(updatedAdmin);
     } catch (err) {
-        res.status(400).json({ message: err.message });
+        res.status(500).json({ message: err.message });
     }
 }
 

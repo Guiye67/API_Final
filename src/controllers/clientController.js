@@ -33,7 +33,7 @@ const createClient = async (req, res) => {
         const token = auth.create(newClient);
         res.status(201).json({newClient, token: token});
     } catch (err) {
-        res.status(400).json({ message: err.message });
+        res.status(500).json({ message: err.message });
     }
 }
 
@@ -48,7 +48,7 @@ const updateClient = async (req, res) => {
         await updateClassesSignedUp(updatedClient.id, updatedClient.classes)
         res.json(updatedClient);
     } catch (err) {
-        res.status(400).json({ message: err.message });
+        res.status(500).json({ message: err.message });
     }
 }
 

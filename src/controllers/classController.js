@@ -36,7 +36,7 @@ const createClass = async (req, res) => {
         const newClass = await gymClass.save();
         res.status(201).json({newClass});
     } catch (err) {
-        res.status(400).json({ message: err.message });
+        res.status(500).json({ message: err.message });
     }
 }
 
@@ -47,7 +47,7 @@ const updateClass = async (req, res) => {
         await updateClientsWhenUpdateClass(oldClass, updatedClass);
         res.json(updatedClass);
     } catch (err) {
-        res.status(400).json({ message: err.message });
+        res.status(500).json({ message: err.message });
     }
 }
 

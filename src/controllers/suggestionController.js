@@ -24,7 +24,7 @@ const createSuggestion = async (req, res) => {
         const newSuggestion = await suggestion.save();
         res.status(201).json({newSuggestion});
     } catch (err) {
-        res.status(400).json({ message: err.message });
+        res.status(500).json({ message: err.message });
     }
 }
 
@@ -33,7 +33,7 @@ const updateSuggestion = async (req, res) => {
         const updatedSuggestion = await Suggestion.findByIdAndUpdate(req.params.id, req.body, {new:true});
         res.json(updatedSuggestion);
     } catch (err) {
-        res.status(400).json({ message: err.message });
+        res.status(500).json({ message: err.message });
     }
 }
 
