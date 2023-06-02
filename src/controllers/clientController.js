@@ -42,6 +42,10 @@ const updateClient = async (req, res) => {
         let hashedPassword = await crypt.createCrypt(req.body.password)
         req.body.password = hashedPassword
     }
+
+    if (req.body.payment == '1999-12-31') {
+        req.body.payment = '0'
+    }
     
     try {
         const updatedClient = await Client.findByIdAndUpdate(req.params.id, req.body, {new:true});
